@@ -1,0 +1,37 @@
+/* Wrap quill so we can style safely */
+.quill-wrapper .ql-container {
+  border-radius: 0 0 6px 6px;
+  min-height: 300px;
+}
+
+.quill-wrapper .ql-editor {
+  min-height: 260px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Better image behavior + spacing */
+.quill-wrapper .ql-editor img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 8px 0;
+}
+
+/* Tidy list alignment/indent */
+.quill-wrapper .ql-editor ol,
+.quill-wrapper .ql-editor ul {
+  padding-left: 1.2rem;
+}
+
+.quill-wrapper .ql-editor li {
+  margin: 6px 0;
+}
+
+/* Make the toolbar + editor look like one piece */
+#editor-toolbar {
+  border: 1px solid #ccc;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  background: #fff;
+}

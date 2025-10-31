@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+/* Quill Editor Styling Fixes */
+.ql-toolbar.ql-snow {
+  border-radius: 6px 6px 0 0;
+}
+
+.ql-container.ql-snow {
+  border-radius: 0 0 6px 6px;
+  min-height: 300px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+/* Make images inside editor responsive */
+.ql-editor img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px auto;
+}

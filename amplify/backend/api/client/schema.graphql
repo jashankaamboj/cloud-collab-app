@@ -1,0 +1,57 @@
+type Document
+  @model
+  @auth(
+    rules: [
+      # ✅ Only owner can CRUD their documents
+      { allow: owner, operations: [create, read, update, delete] }
+      # ❌ Removed: { allow: private, operations: [read] } - was allowing any authenticated user to read all documents
+    ]
+  ) {
+  id: ID!
+  title: String!
+  content: String
+  description: String
+  tags: [String]
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  owner: String
+  shares: [Share] @hasMany(indexName: "byDocument", fields: ["id"])
+}
+
+type Share
+  @model
+  @auth(
+    rules: [
+      # Only the document owner can manage shares (by Cognito username)
+      { allow: owner, ownerField: "owner", identityClaim: "cognito:username", operations: [create, read, update, delete] }
+      # Allow the target user (by email) to read
+      { allow: owner, ownerField: "userEmail", identityClaim: "email", operations: [read] }
+    ]
+  ) {
+  id: ID!
+  documentId: ID! @index(name: "byDocument")
+  document: Document @belongsTo(fields: ["documentId"])
+  userEmail: String!
+  permission: Permission!
+  owner: String
+}
+
+enum Permission {
+  READ
+  WRITE
+}
+
+type Mutation {
+  shareDocument(
+    documentId: ID!
+    userEmail: String!
+    permission: Permission!
+  ): Share
+    @function(name: "shareDocument-${env}")
+
+  unshareDocument(
+    documentId: ID!
+    userEmail: String!
+  ): Share
+    @function(name: "unshareDocument-${env}")
+}
